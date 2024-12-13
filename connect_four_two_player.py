@@ -1,8 +1,4 @@
 from itertools import cycle
-#There are 6 rows and 7 columns 
-#in a Connect Four grid
-rows, cols = (6, 7) 
-
 
 #We want to create a grid.
 
@@ -48,26 +44,26 @@ def player_won(array, counter):
   #Checking for win in rows ---- 
   for i in range(6):
     for j in range(4):
-      if array[i][j] == counter and array[i][j+1] == counter and array[i][j+2] == counter and array[i][j+3] == counter:
-        print(f"Horizontal win detected at row {i}, starting column {j}")
+      if all(array[i][k] == counter for k in range(j, j+4)):
+        #print(f"Horizontal win detected at row {i}, starting column {j}")
         return True
   #Checking for win in columns |
   for j in range(7):
     for i in range(3):
-      if array[i][j] == counter and array[i+1][j] == counter and array[i+2][j] == counter and array[i+3][j] == counter:
-        print(f"Vertical win detected at column {j}, starting row {i}")
+      if all(array[k][j] == counter for k in range(i, i+4)):
+        #print(f"Vertical win detected at column {j}, starting row {i}")
         return True
   #Checking for win in upwards diagonals /
   for i in range(3, 6):
     for j in range(4):
-      if array[i][j] == counter and array[i-1][j+1] == counter and array[i-2][j+2] == counter and array[i-3][j+3] == counter:
-        print(f"Upwards diagonal win detected starting at ({i}, {j})")
+      if all(array[i-k][j+k] == counter for k in range(0, 4)):
+        #print(f"Upwards diagonal win detected starting at ({i}, {j})")
         return True
   #Checking for win in downwards diagonals \
   for i in range(3):
       for j in range(4):
-          if array[i][j] == counter and array[i+1][j+1] == counter and array[i+2][j+2] == counter and array[i+3][j+3] == counter:
-            print(f"Downwards diagonal win detected starting at ({i}, {j})")
+        if all(array[i+k][j+k] == counter for k in range(0, 4)):
+            #print(f"Downwards diagonal win detected starting at ({i}, {j})")
             return True
 
   return False
@@ -101,7 +97,11 @@ def play_connect_4(array, counter):
                 print("Please input an integer between 1 and 7.")
         except ValueError:
             print("Please input an integer between 1 and 7.")
-  
+
+
+#There are 6 rows and 7 columns 
+#in a Connect Four grid
+rows, cols = (6, 7)   
 
 #Playing game until the game is won
 while True:
@@ -116,7 +116,7 @@ while True:
     
     if array_full(array):
         print("The game is a draw!")
-    
+
     # Ask if players want to restart
     print("                                     ")
     restart = input("Do you want to play again? (yes/no): ").strip().lower()
@@ -124,4 +124,4 @@ while True:
     if restart != 'yes' and restart != 'y':
         print("Thank you for playing Connect Four!")
         break
-
+    
